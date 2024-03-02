@@ -9,9 +9,14 @@ import jakarta.persistence.Id;
 public class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long positionId;
-    private String positionName;
+    private Long teamId;
+    private String teamName;
+    private String teamLeaderId;
 
     public Team() {
+    }
+
+    public Team(String positionName) {
+        this.teamName = positionName;
     }
 }
