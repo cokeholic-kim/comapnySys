@@ -6,14 +6,17 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import java.util.List;
+import lombok.Getter;
 
 @Entity
+@Getter
 public class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long teamId;
     private String teamName;
     private Integer teamLeaderId;
+    private Integer annualLeaveBefore;
 
     @OneToMany(mappedBy = "team")
     private List<Employee> employeeList;
@@ -27,18 +30,6 @@ public class Team {
 
     public void setTeamLeader(Integer leaderCode) {
         this.teamLeaderId = leaderCode;
-    }
-
-    public Long getTeamId() {
-        return teamId;
-    }
-
-    public String getTeamName() {
-        return teamName;
-    }
-
-    public Integer getTeamLeaderId() {
-        return teamLeaderId;
     }
 
     public Employee findEmployee(String userName) {
