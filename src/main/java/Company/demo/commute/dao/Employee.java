@@ -20,6 +20,7 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    private Integer annualLeave;
 
     @ManyToOne
     @JoinColumn(name = "position_id")
@@ -31,6 +32,9 @@ public class Employee {
 
     @OneToMany(mappedBy = "employee")
     private List<CommuteHistory> commuteHistories;
+
+    @OneToMany(mappedBy = "employee")
+    private List<AnnualLeaveRegister> annualLeaveRegisters;
 
     private String startDate;
     private String birthDay;
@@ -54,6 +58,22 @@ public class Employee {
         return commuteHistories.stream()
                 .filter(target -> target.getStartTime().toLocalDate().equals(LocalDateTime.now().toLocalDate()))
                 .findFirst();
+    }
+
+//    @PrePersist
+//    @PreUpdate
+//    public void updateAnnualLeave() {
+//        int currentYear = Year.now().getValue();
+//        int startYear = Integer.parseInt(startDate.split("-")[0]);
+//        if (currentYear == startYear) {
+//            annualLeave = 11;
+//        } else {
+//            annualLeave = 15;
+//        }
+//    }
+
+    public void useAL(Integer al) {
+        this.annualLeave -= al;
     }
 
 }
