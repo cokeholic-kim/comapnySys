@@ -1,10 +1,10 @@
 package Company.demo.commute.dto.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
+@AllArgsConstructor
 public class TeamResponse {
     private String name;
     private String manager;
