@@ -23,7 +23,6 @@ public class EmployeeCommuteList {
         return this;
     }
 
-
     public Integer calcEmployeeWorkHour() {
         return commuteHistoryList.stream()
                 .mapToInt(result -> diffMinute(result.getStartTime(), result.getEndTime()))

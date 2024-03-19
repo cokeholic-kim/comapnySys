@@ -53,6 +53,6 @@ public class MemberController {
 
     @GetMapping("/overTimeExcel")
     public void getExcel(Integer holidays, HttpServletResponse response) {
-        excelService.getExcel(holidays, response);
+        excelService.getMemberExcel(holidays, response);
     }
 }
