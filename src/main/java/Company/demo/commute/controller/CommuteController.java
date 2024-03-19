@@ -4,6 +4,8 @@ import Company.demo.commute.dto.request.CommuteGetDto;
 import Company.demo.commute.dto.response.CommuteTotalResponse;
 import Company.demo.commute.service.CommuteService;
 import java.util.Map;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,16 +22,14 @@ public class CommuteController {
 
     @PostMapping
     public void checkWork(@RequestBody Map<String, Long> json) {
-        service.startWork(json.get("employeeId"));
+        service.checkWork(json.get("employeeId"));
     }
 
-    @PostMapping("/worktime")
-    public CommuteTotalResponse checkTime(@RequestBody CommuteGetDto request) {
+
+    @GetMapping("/worktime")
+    public CommuteTotalResponse checkTime(
+            @Validated
+            CommuteGetDto request) {
         return service.checkTime(request);
-    }
-
-    @PostMapping("/worktime2")
-    public CommuteTotalResponse checkTime2(@RequestBody CommuteGetDto request) {
-        return service.checkTime2(request);
     }
 }

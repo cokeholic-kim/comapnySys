@@ -1,9 +1,12 @@
 package Company.demo.commute.dto.request;
 
-import lombok.Getter;
+import java.time.YearMonth;
+import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
-@Getter
+@Data
 public class CommuteGetDto {
-    private Integer employeeId;
-    private String  searchDate;
+    private Long employeeId;
+    @DateTimeFormat(pattern = "yyyy-MM")
+    private YearMonth searchDate;
 }
