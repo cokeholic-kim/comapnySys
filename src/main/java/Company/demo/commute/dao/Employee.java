@@ -8,13 +8,16 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,44 +39,26 @@ public class Employee {
     @OneToMany(mappedBy = "employee")
     private List<AnnualLeaveRegister> annualLeaveRegisters;
 
-    private String startDate;
-    private String birthDay;
+    private LocalDate startDate;
+    private LocalDate birthDay;
+    private Boolean isManager;
 
-
-    public Employee() {
-    }
-
-    public Employee(MemberSaveRequest request, Position position) {
+    public Employee(MemberSaveRequest request) {
         this.name = request.getName();
-        this.position = position;
         this.startDate = request.getStartDate();
         this.birthDay = request.getBirthDay();
+        this.isManager = request.getIsManager();
     }
 
     public void setTeam(Team team) {
         this.team = team;
     }
 
-    public Optional<CommuteHistory> findCommuteHistory() {
-        return commuteHistories.stream()
-                .filter(target -> target.getStartTime().toLocalDate().equals(LocalDateTime.now().toLocalDate()))
-                .findFirst();
-    }
-
-//    @PrePersist
-//    @PreUpdate
-//    public void updateAnnualLeave() {
-//        int currentYear = Year.now().getValue();
-//        int startYear = Integer.parseInt(startDate.split("-")[0]);
-//        if (currentYear == startYear) {
-//            annualLeave = 11;
-//        } else {
-//            annualLeave = 15;
-//        }
-//    }
-
     public void useAL(Integer al) {
         this.annualLeave -= al;
     }
 
+    public void setAnnualLeave(int annualLeave) {
+        this.annualLeave = annualLeave;
+    }
 }
