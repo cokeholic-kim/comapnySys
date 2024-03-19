@@ -1,26 +1,18 @@
 package Company.demo.commute.dto.request;
 
-import Company.demo.commute.dao.Position;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import java.time.LocalDate;
+import lombok.Getter;
 
+@Getter
 public class MemberSaveRequest {
+    @NotBlank(message = "이름을 알려주세요")
     private String name;
-    private String positionName;
-    private String startDate;
-    private String birthDay;
-
-    public String getName() {
-        return name;
-    }
-
-    public String getPositionName() {
-        return positionName;
-    }
-
-    public String getStartDate() {
-        return startDate;
-    }
-
-    public String getBirthDay() {
-        return birthDay;
-    }
+    @NotNull(message = "팀장인지 아닌지 알려주세요")
+    private Boolean isManager;
+    @NotNull(message = "입사일 정보가 필요합니다")
+    private LocalDate startDate;
+    @NotNull(message = "생일 정보가 필요합니다")
+    private LocalDate birthDay;
 }
