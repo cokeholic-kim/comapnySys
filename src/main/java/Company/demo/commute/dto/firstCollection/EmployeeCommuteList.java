@@ -5,7 +5,6 @@ import Company.demo.commute.dao.Employee;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,9 +15,9 @@ public class EmployeeCommuteList {
         this.commuteHistoryList = employee.getCommuteHistories();
     }
 
-    public EmployeeCommuteList filterByYearMonth(String yearMonth){
+    public EmployeeCommuteList filterByYearMonth(YearMonth yearMonth) {
         this.commuteHistoryList = this.commuteHistoryList.stream().filter(
-                result -> isSameYearMonth(yearMonth, result.getStartTime().toString())
+                result -> YearMonth.from(result.getStartTime()).equals(yearMonth)
         ).collect(Collectors.toList());
         return this;
     }
@@ -33,11 +32,4 @@ public class EmployeeCommuteList {
         Duration duration = Duration.between(start, end);
         return (int) duration.toMinutes();
     }
-
-    private static boolean isSameYearMonth(String yearMonth, String queryResult) {
-        YearMonth yearMonthFromRequest = YearMonth.parse(yearMonth, DateTimeFormatter.ofPattern("yyyy-MM"));
-        YearMonth yearMonthFromQuery = YearMonth.parse(queryResult, DateTimeFormatter.ofPattern("yyyy-MM"));
-        return yearMonthFromQuery.equals(yearMonthFromRequest);
-    }
-
 }

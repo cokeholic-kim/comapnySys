@@ -8,13 +8,13 @@ import Company.demo.commute.dto.firstCollection.OverTimeResponseList;
 import Company.demo.commute.dto.request.MemberPositionSetDto;
 import Company.demo.commute.dto.request.MemberSaveRequest;
 import Company.demo.commute.dto.request.MemberTeamSetDto;
+import Company.demo.commute.dto.request.OverTimeRequest;
 import Company.demo.commute.dto.response.EmployeeResponse;
 import Company.demo.commute.dto.response.OverTimeResponse;
 import Company.demo.commute.repository.CompanyPolicyRepository;
 import Company.demo.commute.repository.MemberRepository;
 import Company.demo.commute.repository.TeamRepository;
 import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -55,21 +55,24 @@ public class MemberService {
     }
 
     @Transactional
-    public List<OverTimeResponse> getOverTime(String yearMonth, Integer holidays) {
+    public List<OverTimeResponse> getOverTime(OverTimeRequest request) {
+        YearMonth yearMonth = request.getYearMonth();
+        Integer holidays = request.getHolidays();
+
         //근무규정의 일 근무시간을 조회
         CompanyPolicy policy = policyRepository.findByPolicyGubnAndPolicyName("workTime", "dailyWorkLimit")
                 .orElseThrow(() -> new IllegalArgumentException("없는 정책입니다."));
         //해당하는 달의 총 평균근무시간을 계산 근무일 * 근무시간
         int standardWorkHour = calcStandardWorkDays(yearMonth, holidays) * Integer.parseInt(policy.getPolicyContent());
-
+        //TODO 날짜정보로 직원정보를 조회해와서 사용할수있도록 수정.
         List<Employee> employeeList = repository.findAll();
         OverTimeResponseList overTimeResponseList = new OverTimeResponseList(employeeList, yearMonth, standardWorkHour);
         return overTimeResponseList.getOverTimeResponseList();
     }
 
 
-    private Integer calcStandardWorkDays(String yearMonth, Integer holidays) {
-        int daysInMonth = YearMonth.parse(yearMonth, DateTimeFormatter.ofPattern("yyyy-MM")).lengthOfMonth();
+    private Integer calcStandardWorkDays(YearMonth yearMonth, Integer holidays) {
+        int daysInMonth = yearMonth.lengthOfMonth();
         return daysInMonth - holidays;
     }
 
