@@ -36,7 +36,9 @@ public class CommuteHistory {
 
 
     public void startWorking(){
-        this.startTime = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now();
+        this.startTime = now;
+        this.endTime = now;
     }
 
     public void endWorking(){
