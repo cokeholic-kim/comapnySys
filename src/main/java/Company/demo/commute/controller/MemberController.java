@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -46,9 +47,9 @@ public class MemberController {
         return service.getEmployee();
     }
 
-    @PostMapping("/overTimeCalc")
-    public List<OverTimeResponse> getOverTime(@RequestBody OverTimeRequest overTimeRequest) {
-        return service.getOverTime(overTimeRequest.getYearMonth(), overTimeRequest.getHolidays());
+    @GetMapping("/overTimeCalc")
+    public List<OverTimeResponse> getOverTime(@Validated OverTimeRequest overTimeRequest) {
+        return service.getOverTime(overTimeRequest);
     }
 
     @GetMapping("/overTimeExcel")
